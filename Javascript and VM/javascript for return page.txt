@@ -1,0 +1,9 @@
+    if only going back and nothing being saved i see no harm in using validSubmit('return');
+    but if data can be saved then the first option should be used to go back without saving
+
+
+    there are some additional properties that do the same but with additional functionality
+    .href requires complete url
+    .pathname requires url after domain/
+    .reload bypasses cache but our meta tags should account for that
+    .replace(url)  i believe is same as .href

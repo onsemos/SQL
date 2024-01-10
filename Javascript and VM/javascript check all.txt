@@ -1,0 +1,12 @@
+		StringBuffer scSelectTitle = new StringBuffer();
+		scSelectTitle.append(pageResource.getString("tbl_evtSurcharges_select"));
+		scSelectTitle.append("<br /><a class=\"header\" style=\"font-size:6pt\" href=\"javascript:void(0);\" ");
+		scSelectTitle.append("onClick=\"javascript:evtSurcharges.execOverRows('all','[select]','','[select].setValue(true);[curr].setDisplay(true);')\">");
+		scSelectTitle.append(pageResource.getString("tbl_evtSurcharges_select_all")+"</a>");
+		scSelectTitle.append("<br /><a class=\"header\" style=\"font-size:6pt\" href=\"javascript:void(0);\" ");
+		scSelectTitle.append("onClick=\"javascript:evtSurcharges.execOverRows('none','[select]','[select].setValue(false);[curr].setDisplay(false);','')\">");
+		scSelectTitle.append(pageResource.getString("tbl_evtSurcharges_select_none")+"</a>");
+	
+		ui.addCheckboxColumn("select", scSelectTitle.toString());
+		ui.setInitColumn("select","include");
+		

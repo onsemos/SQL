@@ -1,0 +1,50 @@
+ERFX/static/jscript/validateManager.js
+ERFX/static/jscript/validateManager.js/Cell
+
+
+
+[status].setStyle('color','red')
+[minThreshold].elmt.style.color='red'
+
+
+ui.addColumnAction("capCur","true","[capMax].elmt.innerText=(  ( ([capCur].elmt.innerText.length > 0)?parseFloat([capCur].elmt.innerText):0 ) + ( ([capNew].elmt.innerText.length > 0)?parseFloat([capNew].elmt.innerText):0 ) );","","after","always");
+ui.addColumnAction("capMax","[capMax]<=0","[capMax].setValue('')","","after","always");
+
+
+/jsp/customPages/premierinc/osg/prodTiers.jsp
+ui.addRowValidation("frameRight.checkOverlap(rowNum)","Please remove the overlap","[minThreshold]",null);
+<script>
+		function checkOverlap(rowNum) {
+			var currMin = prodTiers.getCell(rowNum,"minThreshold").getValue(0);
+			var currMax = prodTiers.getCell(rowNum,"maxThreshold").getValue(0);
+			var rowCount = prodTiers.getRowCount();
+
+			for (var i=1; i<=rowCount; i++) {
+				var min = prodTiers.getCell(i,"minThreshold").getValue(0);
+				var max = prodTiers.getCell(i,"maxThreshold").getValue(0);
+				if ( i != rowNum && !(min == 0 && max == 0) && !(currMin == 0 && currMax == 0) ){
+
+					//alert(" currMin:"+currMin.toString()+" currMax:"+currMax.toString()+" min:"+min.toString()+" max:"+max.toString());
+					if( (currMin >= min && currMin < max) || (currMax > min && currMax < max) ) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+</script>
+
+OR
+<script>
+prodTiers.addRangeOverlapValidation("minThreshold", "maxThreshold",false,"Please remove overlap");
+</script>
+
+
+
+Uniquness check for columns (Cb/ocean/seasonSurcharges.jsp)
+
+		ui.addHiddenColumn("chkUniqe");
+		//ui.addHtmlColumn("chkUniqe","html");
+		ui.addColumnAction("origRegion,destRegion,startMonth,endMonth","true","[chkUniqe].setValue([origRegion].toString()+[destRegion].toString()+[startMonth].toString()+[endMonth].toString())","","after","always");
+	
+		ui.setColumnUnique("chkUniqe",true,"(Origin Region) + (Destination Region) + (Month Start) + (Month End) must be unique.");

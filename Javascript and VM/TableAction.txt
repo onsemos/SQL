@@ -1,0 +1,38 @@
+originally for premierinc/osg/prodTiers.jsp
+not used currently.
+
+	
+	ui.addHiddenColumn("rowId");
+		ui.setInitColumn("rowId", "prod_tier_vol_id");
+
+		ui.addHiddenColumn("tierId");
+		//ui.setInitColumn("tierId", "prod_tier_id");
+		
+		ui.addHtmlColumn("tierName", "Tier");
+		//ui.setInitColumn("tierName", "prod_tier_name");
+
+		ui.addNumericBoxColumn("min", "Minimum Threshold &ge; X", DataValidation.INTEGER, 20, 20);
+		ui.setInitColumn("min", "min_threshold");
+		ui.addColumnAction("min", "rowNum==1", "[min].setValue(0).showAsHTML(true).appendHTML('&nbsp;USD')", "[min].appendHTML('USD')", "after", "only_on_load");
+		
+		ui.addNumericBoxColumn("max", "Maximum Threshold &le; X", DataValidation.INTEGER, 20, 20);
+		ui.setInitColumn("max", "max_threshold");
+		
+		ui.addColumnAction("tierName", "true", "[tierId].setValue(rowNum); [tierName].setValue('Tier ' + rowNum);", "", "only_on_load", "after");
+		
+		//ui.addColumnAction("min,max", "!([min].isDefault() || [max].isDefault() || [min]<[max])", "[min].setStyle('color','red');[max].setStyle('color','red')", "[min].setStyle('color','black');[max].setStyle('color','black')", "after", "not_on_load");
+		//ui.addRowValidation("[min].isDefault() || [max].isDefault() || [min]<[max]", "Please make sure Minimum Threshold is smaller than Maximum Threshold.", "min", null);
+		ui.addRowValidation("[min].getValue(0)<[max].getValue(Number.MAX_VALUE)", "Please make sure Minimum Threshold is smaller than Maximum Threshold.", "min", null);
+
+        ui.addTableAction("LowerBound","min","true","before","alwlays");
+
+        ui.setTALocals("LowerBound","%mins%=new Array(); %tmpMax%=0; %last%=0;");     
+        ui.setTAAction("LowerBound","rowNum> 1 && ![min].isDefault()","%mins%.push([min]); %mins%.sortNum();","");
+					//another way to sort: %mins%.sort(function(a,b){return a - b})
+
+        ui.setTAFinal("LowerBound","true","%last%=%tmpMax%; [min].setValue( (%tmpMax% >= 0)?%tmpMax%:''  ); %tmpMax%=( (%mins%.length > 0)?%mins%.shift():'' );" +
+        								"[max].setValue(%tmpMax%).showAsHTML(true).appendHTML(  (%tmpMax% == '')? (  (%last% != '')?%last%+'+ USD':''   ):'&nbsp;USD'   )","");
+        
+
+		ui.addRowValidation("frameRight.checkOverlap(rowNum)","The ranges entered overlap. Please adjust the minimum/maximum values of the ranges so that no overlap occurs","[min]",null);
+	
