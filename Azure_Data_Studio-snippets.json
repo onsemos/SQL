@@ -1,0 +1,17 @@
+{
+"Select *": {
+   "prefix": "ssf",
+   "body": "SELECT\t\t* \r\nFROM\t\t",
+   "description": "select *"
+	},
+"TRAN TRY": {
+   "prefix": "trans",
+   "body": "BEGIN TRY BEGIN TRAN\r\n\r\nCOMMIT TRAN END TRY\r\n\r\nBEGIN CATCH\r\n\tIF @@TRANCOUNT > 0 ROLLBACK\r\n\tDECLARE @ErrMessage NVARCHAR(4000) = ERROR_MESSAGE()\r\n\tRAISERROR(@ErrMessage, 16, 1)\r\nEND CATCH",
+   "description": "TRAN TRY"
+	},
+"Select top 5": {
+   "prefix": "sqlSelectTop5",
+   "body": "SELECT TOP 5 * FROM ${1:TableName}",
+   "description": "User-defined snippet example 1"
+   },
+}
